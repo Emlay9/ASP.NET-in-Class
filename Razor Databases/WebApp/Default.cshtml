@@ -15,7 +15,20 @@
         foreach(var row in results)
         {
             <div>
+                <a href="#">@row.CategoryName</a>
                 @row.Description
+                @if(row.Picture != null)
+                {
+                    //Getting a string version of the binary image
+                    string base64String = Convert.ToBase64String(row.Picture);
+                    //Create a string to be the src for my image ($"" is like usign string.Format("")
+                    //string src = string.Format("data:{0};base64,{1}", row.PictureMimeType, base64String);
+                    string src = $"data:{row.PictureMimeType};base64,{base64String}";
+                    //text is just a way of switching back to html without creating a div or some other tag (it's not acually necesarry in this case)
+                    @*<text>*@
+                        <img src="@src" width="75"/>
+                    @*</text>*@
+                }
             </div>
         }
     }
