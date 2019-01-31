@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    @{
+        //Make a reference to the database: We can use the (older) WebMatrix database to get "quick" 
+        //Access to a database referenced in the Web.config
+        var westWindDatabase = WebMatrix.Data.Database.Open("WestWindDb");
+        //We can use our database object to qery for data
+        var results = westWindDatabase.Query("select CategoryID, CategoryName, Description, Picture, PictureMimeType from Categories");
+
+        //Display the data using a loop
+        foreach(var row in results)
+        {
+            <div>
+                @row.Description
+            </div>
+        }
+    }
+</body>
+</html>
