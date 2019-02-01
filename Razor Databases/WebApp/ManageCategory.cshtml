@@ -10,34 +10,127 @@
             grid-column-gap: 5px;
         }
 
+            form > img {
+                grid-column: 2;
+            }
+
         fieldset {
             border: none;
             padding-left: 0;
             margin-left: 0;
-            grid-column:2;
+            grid-column: 2;
         }
-
     </style>
 </head>
 <body>
     <h1>Manage Category</h1>
+    @{
+        //variables for category details (with defaults)
+        //nameof returns the string catId
+        // ?? is the null coalesing operator (it means that if the thing on the left is null then use the thing on the right of the ??
+        string catId = Request[nameof(catId)] ?? string.Empty;
+        string catName = Request[nameof(catName)] ?? string.Empty;
+        string catDescription = Request[nameof(catDescription)] ?? string.Empty;
+        string mimeType = string.Empty;
+        byte[] catPicBytes = null;
+        string submitType = Request[nameof(submitType)] ?? string.Empty;
+        //That's for capturing the file of the posted image (when a new category is added or an image is updated)
+        HttpPostedFileBase catPic = null;
+        //opens a connection to the database
+        var westWindDatabase = WebMatrix.Data.Database.Open("WestWindDb");
 
-    <form method="post">
+        if (IsPost)
+        {
+            //See if an image was included in the posted form data
+            if(Request.Files.Count > 0) 
+            {
+                catPic = Request.Files[0];
+                mimeType = catPic.ContentType;
+                catPicBytes = new byte[catPic.ContentLength];
+                catPic.InputStream.Read(catPicBytes, 0, catPic.ContentLength);
+            }
+            switch (submitType)
+            {
+                case "Add":
+                    string insertStatement = "insert into categories(CategoryName, Description, Picture, PictureMimeType) values (@0, @1, @2, @3)";
+                    westWindDatabase.Execute(insertStatement, catName, catDescription, catPicBytes, mimeType);
+                    //Inserting gets the database to make a CategoryID for the new row
+                    // so we want to grab that new identity value.
+                    //SCOPE_IDENTITY returns the last identity value inserted into an identity column in the same scope
+                    var newId = westWindDatabase.QueryValue("select SCOPE_IDENTITY()");
+                    break;
+                case "Update":
+    <div>Coming next class</div>
+                    break;
+                case "Delete":
+    <div>Later...</div>
+                    break;
+                case "Cancel":
+                    Response.Redirect("~", true); //takes you back to the previous web page
+                    break;
+                default:
+                    <div>WTF == "What's that for?</div>
+                    break;
+
+            }
+        }
+        else
+        {
+            //READ the data to diaplsy
+            // @0 is the first placeholder position
+            // NEVER, EVER build the string using string interpolataion
+            //ALWAYS use placeholders to pass data to the database
+            string query = "select CategoryID, CategoryName, Description, Picture, PictureMimeType from Categories where categoryID = @0";
+            //.QuerySingle will return an object representing the row (.Query returns multiple rows)
+            //or the value null if nothing was found
+            var result = westWindDatabase.QuerySingle(query, catId);
+
+            if (result == null)
+            {
+                <div>No such category found for ID @catId</div>
+            }
+            else
+            {
+                catName = result.CategoryName;
+                catDescription = result.Description;
+                catPicBytes = result.Picture;
+                mimeType = result.PictureMimeType;
+            }
+        }//end of else
+    } @* end of razor *@
+
+    @* When your form will have an <input type="file" />,
+        then you will need to have the enctype (encoding type) attribut on your form element*@
+    <form method="post" enctype="multipart/form-data">
         <label>Name</label>
-        <input type="text" name="catName" placeholder="Category Name" />
+        <input type="text" name="@nameof(catName)" placeholder="Category Name" value="@catName" />
 
         <label>Descriptions</label>
-        <input type="text" name="catDescription" placeholder="Description" />
+        <input type="text" name="@nameof(catDescription)" placeholder="Description" value="@catDescription" />
 
         <label>Picture</label>
         <input type="file" name="catPic" />
+        @if (catPicBytes != null)
+        {
+            string base64String = Convert.ToBase64String(catPicBytes);
+            string imageSrc = $"data:{mimeType};base64,{base64String}";
+            <text>
+                <img src="@imageSrc" width="75" />
+            </text>
+        }
 
         <fieldset class="buttons">
-            <input type="submit" name="submitType" value="Add" />
-            <input type="submit" name="submitType" value="Update" />
-            <input type="submit" name="submitType" value="Delete" />
+            @if (string.IsNullOrWhiteSpace(catId))
+            {
+                <input type="submit" name="@nameof(submitType)" value="Add" />
+            }
+            else
+            {
+                <input type="submit" name="@nameof(submitType)" value="Update" />
+                <input type="submit" name="@nameof(submitType)" value="Delete" />
+            }
             <input type="submit" name="submitType" value="Cancel" />
-            <input type="hidden" name="catID"/>
+            <input type="hidden" name="@nameof(catId)" value="@catId" />
         </fieldset>
     </form>
 </body>
