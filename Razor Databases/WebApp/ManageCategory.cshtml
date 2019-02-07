@@ -42,7 +42,7 @@
         if (IsPost)
         {
             //See if an image was included in the posted form data
-            if(Request.Files.Count > 0) 
+            if (Request.Files.Count > 0)
             {
                 catPic = Request.Files[0];
                 mimeType = catPic.ContentType;
@@ -60,10 +60,48 @@
                     var newId = westWindDatabase.QueryValue("select SCOPE_IDENTITY()");
                     break;
                 case "Update":
-    <div>Coming next class</div>
+                    string updateStatement;
+                    int rowsAffected;
+                    // If/else for if there was an uploaded picture or not
+                    if (catPicBytes != null)
+                    {
+                        updateStatement = "UPDATE Categories SET CategoryName = @0, Description = @1, Picture = @2, PictureMimeType = @3 WHERE CategoryID = @4";
+                        //Execute gives back the number of rows affected
+                        rowsAffected = westWindDatabase.Execute(updateStatement, catName, catDescription, catPicBytes, mimeType, catId);
+                    }
+                    else
+                    {
+                        updateStatement = "UPDATE Categories SET CategoryName = @0, Description = @1 WHERE CategoryID = @2";
+                        rowsAffected = westWindDatabase.Execute(updateStatement, catName, catDescription, catId);
+                    }
+                    // (if no rows were affected the update didn't work)
+                    if (rowsAffected == 0)
+                    {
+                        <div>Update failed. Try again or cancel.</div>
+                    }
+                    else
+                    {
+                        <div>Update successful.</div>
+                    }
                     break;
                 case "Delete":
-    <div>Later...</div>
+                    string deleteStatement;
+                    int rowCount;
+                    deleteStatement = "DELETE Categories WHERE CategoryID = @0";
+                    rowCount = westWindDatabase.Execute(deleteStatement, catId);
+                    if (rowCount == 0)
+                    {
+                        <div>Delete failed. Try again or cancel.</div>
+                    }
+                    else
+                    {
+                        <div>Delete successful.</div>
+                        catId = string.Empty;
+                        catName = string.Empty;
+                        catDescription = string.Empty;
+                        catPicBytes = null;
+                        mimeType = string.Empty;
+                    }
                     break;
                 case "Cancel":
                     Response.Redirect("~", true); //takes you back to the previous web page
