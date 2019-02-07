@@ -15,8 +15,9 @@
         foreach(var row in results)
         {
             <div>
-                @* Link to the mangage category page using a query string to show the specific category chosen *@
+                @* Link to the MangageCategory page using a query string to go and edit that specific category *@
                 <a href="~/ManageCategory.cshtml?catId=@row.CategoryID">@row.CategoryName</a>
+                @* displays the description (Description is property for each row or item in the database) *@
                 @row.Description
                 @if(row.Picture != null)
                 {
@@ -24,8 +25,9 @@
                     string base64String = Convert.ToBase64String(row.Picture);
                     //Create a string to be the src for my image ($"" is like usign string.Format("")
                     //string src = string.Format("data:{0};base64,{1}", row.PictureMimeType, base64String);
+                    //that's the path to the image in the database (like img/cow.jpg except more complicated)
                     string src = $"data:{row.PictureMimeType};base64,{base64String}";
-                    //text is just a way of switching back to html without creating a div or some other tag (it's not acually necesarry in this case)
+                    //text is just a way of switching back to html without creating a div or some other tag (it's not acually necessary in this case)
                     @*<text>*@
                         <img src="@src" width="75"/>
                     @*</text>*@
