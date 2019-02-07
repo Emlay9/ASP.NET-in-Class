@@ -68,7 +68,7 @@
                     if (catPicBytes != null)
                     {
                         updateStatement = "UPDATE Categories SET CategoryName = @0, Description = @1, Picture = @2, PictureMimeType = @3 WHERE CategoryID = @4";
-                        //Execute gives back the number of rows affected
+                        //Execute gives back the number of rows affected (and also executes the database statements)
                         rowsAffected = westWindDatabase.Execute(updateStatement, catName, catDescription, catPicBytes, mimeType, catId);
                     }
                     else
