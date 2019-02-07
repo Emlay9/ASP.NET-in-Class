@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        form {
+            display: grid;
+            grid-gap: 20px;
+            grid-template-columns:120px 12px 300px auto;
+        }
+
+        form > label {
+            grid-column: 1;
+        }
+
+        form > select, form > input{
+            grid-column: 2 / span 2;
+        }
+
+        form > select + button{
+            grid-column: 4;
+        }
+
+        form > button {
+            width: 10%;
+        }
+
+        form > input[type=checkbox]{
+            grid-column: 2;
+        }
+
+        form > input[type=checkbox] + label{
+            grid-column: 3;
+        }
+
+        form > hr {
+            grid-column: 1 / span 4;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    @{ 
+        var westWindDatabase = WebMatrix.Data.Database.Open("WestWindDb");
+        string selectedProductId = Request[nameof(selectedProductId)];
+        string productName = Request[nameof(productName)];
+        string supplierId = Request[nameof(supplierId)];
+        string categoryId = Request[nameof(categoryId)];
+        string qtyPerUnit = Request[nameof(qtyPerUnit)];
+        string unitPrice = Request[nameof(unitPrice)];
+        string onOrder = Request[nameof(onOrder)];
+        string isDiscontinued = Request[nameof(isDiscontinued)];
+    }
+    <div>
+        <h4>Diagnostics</h4>
+        @selectedProductId
+    </div>
+    <h1>Manage Products</h1>
+    <form method="post">
+        <label for="ProductsList">Products</label>
+        <select name="@nameof(selectedProductId)" id="ProductList">
+            <option value="">[Select a product to Edit]</option>
+            @{ 
+                var products = westWindDatabase.Query("Select  ProductId, ProductName from Products");
+                foreach(var row in products)
+                {
+                    <option value="@row.ProductID" selected="@(row.ProductID.ToString() == selectedProductId)">@row.ProductName</option>
+                }
+            }
+        </select>
+        <button type="submit" name="submitAction" value="Edit">Edit</button>
+        <hr />
+
+        <label for="ProductName">Name</label>
+        <input type="text" name="productName" id="ProductName" />
+
+        <label for="SupplierList">Supplier</label>
+        <select type="text" name="supplierList" id="SupplierList">
+            <option value="">[Select a Supplier]</option>
+            @{ 
+                var suppliers = westWindDatabase.Query("Select SupplierID, CompanyName from Suppliers");
+                foreach(var row in suppliers)
+                {
+                    <option value="@row.SupplierID">@row.CompanyName</option>
+                }
+            }
+        </select>
+
+        <label for="CategoriesList">Categories</label>
+        <select type="text" name="categoriesList" id="CategoriesList">
+            <option value="">[Select a Category]</option>
+            @{
+                var categories = westWindDatabase.Query("Select CategoryID, CategoryName from Categories");
+                foreach (var row in categories)
+                {
+                    <option value="@row.CategoryID">@row.CategoryName</option>
+                }
+            }
+        </select>
+
+        <label for="UnitPrice">Unit Price</label>
+        <input type="text" name="unitPrice" id="UnitPrice" />
+
+        <label for="QtyPerUnit">Quantity Per Unit</label>
+        <input type="text" name="qtyPerUnit" id="QtyPerUnit" />
+
+        <label for="OnOrder">On Order</label>
+        <input type="text" name="onOrder" id="OnOreder" />
+
+        <label for="ProductName">Discontinued</label>
+        <input type="checkbox" name="isDiscontinued" id="ProductName" />
+        <label for="IsDiscontinued">Check if discontinued</label>
+
+    </form>
+
+</body>
+</html>
