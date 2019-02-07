@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@* You can see the teacher's version in his 2019-jan-in class git repository *@
+
+<!DOCTYPE html>
 <html>
 <head>
     <title></title>
@@ -88,6 +90,7 @@
                     string deleteStatement;
                     int rowCount;
                     deleteStatement = "DELETE Categories WHERE CategoryID = @0";
+                    //row count is the same as rows effected (to check if the delete worked)
                     rowCount = westWindDatabase.Execute(deleteStatement, catId);
                     if (rowCount == 0)
                     {
@@ -165,7 +168,8 @@
             else
             {
                 <input type="submit" name="@nameof(submitType)" value="Update" />
-                <input type="submit" name="@nameof(submitType)" value="Delete" />
+                //onclick is javaScript fail safe, creates a popup
+                <input name="submitType" type="submit" value="Delete" onclick="return confirm('Are you sure you want to permanently remove this category?')" />
             }
             <input type="submit" name="submitType" value="Cancel" />
             <input type="hidden" name="@nameof(catId)" value="@catId" />
