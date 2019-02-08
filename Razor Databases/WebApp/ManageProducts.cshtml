@@ -3,6 +3,7 @@
 <head>
     <title></title>
     <style type="text/css">
+        
         form {
             display: grid;
             grid-gap: 20px;
@@ -105,12 +106,21 @@
         <input type="text" name="qtyPerUnit" id="QtyPerUnit" />
 
         <label for="OnOrder">On Order</label>
-        <input type="text" name="onOrder" id="OnOreder" />
+        <input type="text" name="onOrder" id="OnOrder" />
 
-        <label for="ProductName">Discontinued</label>
-        <input type="checkbox" name="isDiscontinued" id="ProductName" />
+        @* the for makes it so it checks when you click the label *@
+        <label for="IsDiscontinued">Discontinued</label>
+        <input type="checkbox" name="isDiscontinued" id="IsDiscontinued" />
         <label for="IsDiscontinued">Check if discontinued</label>
 
+        <fieldset>
+            <button type="submit" name="submitAction" value="Add">Add New Product</button>
+            <button type="submit" name="submitAction" value="Update">Update Product</button>
+            <button type="submit" name="submitAction" value="Delete">Remove From Catalog</button>
+            <button type="submit" name="submitAction" value="Clear">Clear Form</button>
+            @* inputs: the value is the same as the text unlike buttons *@
+            <input type="reset" value="Reset Form"/>
+        </fieldset>
     </form>
 
 </body>
