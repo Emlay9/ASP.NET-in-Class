@@ -6,7 +6,7 @@
         
         form {
             display: grid;
-            grid-gap: 20px;
+            grid-gap: 7px;
             grid-template-columns:120px 12px 300px auto;
         }
 
@@ -51,6 +51,7 @@
 <body>
     @{ 
         var westWindDatabase = WebMatrix.Data.Database.Open("WestWindDb");
+        string sql;
         string selectedProductId = Request[nameof(selectedProductId)];
         string productName = Request[nameof(productName)];
         string supplierId = Request[nameof(supplierId)];
@@ -59,12 +60,62 @@
         string unitPrice = Request[nameof(unitPrice)];
         string onOrder = Request[nameof(onOrder)];
         string isDiscontinued = Request[nameof(isDiscontinued)];
+        string submitAction = Request[nameof(submitAction)];
     }
-    <div>
+    <div class="diagnostics">
+        @* TO DO: Put this in a razor helper *@
         <h4>Diagnostics</h4>
+        <div>Processing the <b>@submitAction</b></div>
         @selectedProductId
+        @supplierId
+        @categoryId
     </div>
+
     <h1>Manage Products</h1>
+    <div>
+        @if (IsPost)
+        {
+            switch(submitAction)
+            {
+                case "Edit":
+                    sql = "select ProductName, SupplierID, CategoryId, UnitPrice, QuantityPerUnit, UnitsOnOrder, Discontinuer from Products where productID=@0";
+                    break;
+                case "Add":
+                    sql = "insert into Products(ProductName, SupplierID, CategoryId, UnitPrice, QuatityPerUnit, UnitsOnOrder, Discontinued)" +
+                            "Values(@0, @1, @2, @3, @4, @5, @6)";
+                    //After successful insert
+                    sql = "Select scope_identity()";
+                    break;
+                case "Update":
+                    sql = "Update Products set productName = @0, SupplierID = @1, CategoryID = @2, UnitPrice = @3, QuantityPerUnit = @4, UnitsOnOrder = @5, Discontinued = @6" +
+                            "where ProductID = @7";
+                    break;
+                case "Delete":
+                    sql = "delete from Products where ProductID = @0";
+                    break;
+                case "Clear":
+                    string dropDownDefault = "0";
+                    selectedProductId = dropDownDefault; //default 
+                    productName = string.Empty;
+                    supplierId = dropDownDefault;
+                    categoryId = dropDownDefault;
+                    unitPrice = string.Empty;
+                    qtyPerUnit = string.Empty;
+                    onOrder = string.Empty;
+                    isDiscontinued = string.Empty;
+                    break;
+                default:
+                    <text>Unknown post-back option</text>
+                    break;
+            }
+        }
+        else
+        {
+            <text>Use this form to manage items in the Product catalog.</text>
+        }
+    </div>
+    
+
     <form method="post">
         <label for="ProductsList">Products</label>
         <select name="@nameof(selectedProductId)" id="ProductList">
