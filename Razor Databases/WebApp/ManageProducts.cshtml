@@ -50,8 +50,10 @@
 </head>
 <body>
     @{
-        var westWindDatabase = WebMatrix.Data.Database.Open("WeestWindDb");
+        var westWindDatabase = WebMatrix.Data.Database.Open("WestWindDb");
         string sql;
+        int count;
+        Exception error;
         string selectedProductId = Request[nameof(selectedProductId)];
         string productName = Request[nameof(productName)];
         string supplierId = Request[nameof(supplierId)];
@@ -65,7 +67,18 @@
     <div class="diagnostics">
         @* TO DO: Put this in a razor helper *@
         <h4>Diagnostics</h4>
-        <div>Processing the <b>@submitAction</b></div>
+        <div>Testing error reporting:</div>
+        @{ 
+            try
+            {
+                throw new NotImplementedException("Just testing the errors:");
+            }
+            catch (Exception ex)
+            {
+                @ReportError(ex);
+            }
+        }
+        <div>Processing the <b>@submitAction</b> Request</div>
         @selectedProductId
         @supplierId
         @categoryId
@@ -79,10 +92,13 @@
             {
                 case "Edit":
                     sql = "select ProductName, SupplierID, CategoryId, UnitPrice, QuantityPerUnit, UnitsOnOrder, Discontinuer from Products where productID=@0";
+                    var result = QueryDatabase(westWindDatabase, sql, selectedProductId);
                     break;
                 case "Add":
                     sql = "insert into Products(ProductName, SupplierID, CategoryId, UnitPrice, QuatityPerUnit, UnitsOnOrder, Discontinued)" +
                             "Values(@0, @1, @2, @3, @4, @5, @6)";
+                    error = Execute(westWindDatabase, out count, sql, productName, supplierId, categoryId, unitPrice, qtyPerUnit, onOrder, isDiscontinued);
+                    //TODO: Error processing - check the error result and the count
                     //After successful insert
                     sql = "Select scope_identity()";
                     break;
@@ -115,106 +131,141 @@
         }
     </div>
 
-
-    <form method="post">
-        <label for="ProductsList">Products</label>
-        <select name="@nameof(selectedProductId)" id="ProductList">
-            <option value="">[Select a product to Edit]</option>
-            @{
-                var products = QueryDatabase(westWindDatabase, "Select  ProductId, ProductName from Products");
-                if (products is Exception)
-                {
-                    <option value="">[Products unavailable]</option>
-                }
-                else
-                {
-                    foreach (var row in products)
-                    {
-                        <option value="@row.ProductID" selected="@(row.ProductID.ToString() == selectedProductId)">@row.ProductName</option>
+    @{
+        var products = QueryDatabase(westWindDatabase, "Select  ProductId, ProductName from Products");
+        if (products is Exception)
+        {
+            //I call the razor helper with the @ symbol 
+            //- that is to acknowledge that it can output HTML content inside that method.
+           @ReportError(products)
+        }
+        else
+        {
+            <form method="post">
+                <label for="ProductsList">Products</label>
+                <select name="@nameof(selectedProductId)" id="ProductList">
+                    <option value="">[Select a product to Edit]</option>
+                    @{
+                        foreach (var row in products)
+                        {
+                            <option value="@row.ProductID" selected="@(row.ProductID.ToString() == selectedProductId)">@row.ProductName</option>
+                        }
                     }
-                }
-            }
-        </select>
-        <button type="submit" name="submitAction" value="Edit">Edit</button>
-        <hr />
 
-        <label for="ProductName">Name</label>
-        <input type="text" name="productName" id="ProductName" />
+                </select>
+                <button type="submit" name="submitAction" value="Edit">Edit</button>
+                <hr />
 
-        <label for="SupplierList">Supplier</label>
-        <select type="text" name="supplierList" id="SupplierList">
-            <option value="">[Select a Supplier]</option>
-            @{
-                var suppliers = QueryDatabase(westWindDatabase, "Select SupplierID, CompanyName from Suppliers");
-                if (products is Exception)
-                {
-                    <option value="">[Suppliers unavailable]</option>
-                }
-                else
-                {
-                    foreach (var row in suppliers)
-                    {
-                        <option value="@row.SupplierID">@row.CompanyName</option>
+                <label for="ProductName">Name</label>
+                <input type="text" name="productName" id="ProductName" />
+
+                <label for="SupplierList">Supplier</label>
+                <select type="text" name="supplierList" id="SupplierList">
+                    <option value="">[Select a Supplier]</option>
+                    @{
+                        var suppliers = QueryDatabase(westWindDatabase, "Select SupplierID, CompanyName from Suppliers");
+                        if (products is Exception)
+                        {
+                            <option value="">[Suppliers unavailable]</option>
+                        }
+                        else
+                        {
+                            foreach (var row in suppliers)
+                            {
+                                <option value="@row.SupplierID">@row.CompanyName</option>
+                            }
+                        }
                     }
-                }
-            }
-        </select>
+                </select>
 
-        <label for="CategoriesList">Categories</label>
-        <select type="text" name="categoriesList" id="CategoriesList">
-            <option value="">[Select a Category]</option>
-            @{
-                var categories = QueryDatabase(westWindDatabase, "Select CategoryID, CategoryName from Categories");
-                if (products is Exception)
-                {
-                    <option value="">[Categories unavailable]</option>
-                }
-                else
-                {
-                    foreach (var row in categories)
-                    {
-                        <option value="@row.CategoryID">@row.CategoryName</option>
+                <label for="CategoriesList">Categories</label>
+                <select type="text" name="categoriesList" id="CategoriesList">
+                    <option value="">[Select a Category]</option>
+                    @{
+                        var categories = QueryDatabase(westWindDatabase, "Select CategoryID, CategoryName from Categories");
+                        if (products is Exception)
+                        {
+                            <option value="">[Categories unavailable]</option>
+                        }
+                        else
+                        {
+                            foreach (var row in categories)
+                            {
+                                <option value="@row.CategoryID">@row.CategoryName</option>
+                            }
+                        }
                     }
-                }
-            }
-        </select>
+                </select>
 
-        <label for="UnitPrice">Unit Price</label>
-        <input type="text" name="unitPrice" id="UnitPrice" />
+                <label for="UnitPrice">Unit Price</label>
+                <input type="text" name="unitPrice" id="UnitPrice" />
 
-        <label for="QtyPerUnit">Quantity Per Unit</label>
-        <input type="text" name="qtyPerUnit" id="QtyPerUnit" />
+                <label for="QtyPerUnit">Quantity Per Unit</label>
+                <input type="text" name="qtyPerUnit" id="QtyPerUnit" />
 
-        <label for="OnOrder">On Order</label>
-        <input type="text" name="onOrder" id="OnOrder" />
+                <label for="OnOrder">On Order</label>
+                <input type="text" name="onOrder" id="OnOrder" />
 
-        @* the for makes it so it checks when you click the label *@
-        <label for="IsDiscontinued">Discontinued</label>
-        <input type="checkbox" name="isDiscontinued" id="IsDiscontinued" />
-        <label for="IsDiscontinued">Check if discontinued</label>
+                @* the for makes it so it checks when you click the label *@
+                <label for="IsDiscontinued">Discontinued</label>
+                <input type="checkbox" name="isDiscontinued" id="IsDiscontinued" />
+                <label for="IsDiscontinued">Check if discontinued</label>
 
-        <fieldset>
-            <button type="submit" name="submitAction" value="Add">Add New Product</button>
-            <button type="submit" name="submitAction" value="Update">Update Product</button>
-            <button type="submit" name="submitAction" value="Delete">Remove From Catalog</button>
-            <button type="submit" name="submitAction" value="Clear">Clear Form</button>
-            @* inputs: the value is the same as the text unlike buttons *@
-            <input type="reset" value="Reset Form" />
-        </fieldset>
-    </form>
+                <fieldset>
+                    <button type="submit" name="submitAction" value="Add">Add New Product</button>
+                    <button type="submit" name="submitAction" value="Update">Update Product</button>
+                    <button type="submit" name="submitAction" value="Delete">Remove From Catalog</button>
+                    <button type="submit" name="submitAction" value="Clear">Clear Form</button>
+                    @* inputs: the value is the same as the text unlike buttons *@
+                    <input type="reset" value="Reset Form" />
+                </fieldset>
+            </form>
+        }
+    }
+
+
 
 </body>
 </html>
 
+@helper ReportError(Exception ex)
+{
+    // Helpers can render to the browser output
+    if (ex != null)
+    {
+        string stackTrace = ex.StackTrace.Replace(" at", "<br/>at ").Replace(" in ", "<br/>in ");
+        <div>There was a problem accessing the database: @ex.Message</div>
+        <details>
+            <summary>Stack Trace</summary>
+            <pre>@Html.Raw(stackTrace)</pre>
+        </details>
+    }
+}
+
 @functions {
     // Razor functions CAN NOT directly output/render to the browser response
+    private Exception Execute(WebMatrix.Data.Database db, out int count, string sql, params object[] values)
+    {
+        count = 0;
+        Exception result = null;
+        try
+        {
+            count = db.Execute(sql, values);
+        }
+        catch (Exception ex)
+        {
+            result = ex;
+        }
+        return result;
+    }
 
-    private dynamic QueryDatabase(WebMatrix.Data.Database db, string query)
+
+    private dynamic QueryDatabase(WebMatrix.Data.Database db, string query, params object[] values)
     {
         dynamic result;
         try
         {
-            result = db.Query(query);
+            result = db.Query(query, values);
         }
         catch (Exception ex)
         {
