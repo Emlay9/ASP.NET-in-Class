@@ -3,54 +3,54 @@
 <head>
     <title></title>
     <style type="text/css">
-        
+
         form {
             display: grid;
             grid-gap: 7px;
-            grid-template-columns:120px 12px 300px auto;
+            grid-template-columns: 120px 12px 300px auto;
         }
 
-        form > label {
-            grid-column: 1;
-        }
+            form > label {
+                grid-column: 1;
+            }
 
-        form > select, form > input{
-            grid-column: 2 / span 2;
-        }
+            form > select, form > input {
+                grid-column: 2 / span 2;
+            }
 
-        form > select + button{
-            grid-column: 4;
-        }
+                form > select + button {
+                    grid-column: 4;
+                }
 
-        form > button {
-            width: 10%;
-        }
+            form > button {
+                width: 10%;
+            }
 
-        form > input[type=checkbox]{
-            grid-column: 2;
-        }
+            form > input[type=checkbox] {
+                grid-column: 2;
+            }
 
-        form > input[type=checkbox] + label{
-            grid-column: 3;
-        }
+                form > input[type=checkbox] + label {
+                    grid-column: 3;
+                }
 
-        form > hr {
-            grid-column: 1 / span 4;
-            width: 100%;
-        }
+            form > hr {
+                grid-column: 1 / span 4;
+                width: 100%;
+            }
 
-        form > fieldset {
-            grid-column: 1 /span 5;
-            border: 0px;
-            margin: 0px;
-            padding: 0px;
-            margin-top: 10px;
-        }
+            form > fieldset {
+                grid-column: 1 /span 5;
+                border: 0px;
+                margin: 0px;
+                padding: 0px;
+                margin-top: 10px;
+            }
     </style>
 </head>
 <body>
-    @{ 
-        var westWindDatabase = WebMatrix.Data.Database.Open("WestWindDb");
+    @{
+        var westWindDatabase = WebMatrix.Data.Database.Open("WeestWindDb");
         string sql;
         string selectedProductId = Request[nameof(selectedProductId)];
         string productName = Request[nameof(productName)];
@@ -75,7 +75,7 @@
     <div>
         @if (IsPost)
         {
-            switch(submitAction)
+            switch (submitAction)
             {
                 case "Edit":
                     sql = "select ProductName, SupplierID, CategoryId, UnitPrice, QuantityPerUnit, UnitsOnOrder, Discontinuer from Products where productID=@0";
@@ -95,7 +95,7 @@
                     break;
                 case "Clear":
                     string dropDownDefault = "0";
-                    selectedProductId = dropDownDefault; //default 
+                    selectedProductId = dropDownDefault; //default
                     productName = string.Empty;
                     supplierId = dropDownDefault;
                     categoryId = dropDownDefault;
@@ -114,17 +114,24 @@
             <text>Use this form to manage items in the Product catalog.</text>
         }
     </div>
-    
+
 
     <form method="post">
         <label for="ProductsList">Products</label>
         <select name="@nameof(selectedProductId)" id="ProductList">
             <option value="">[Select a product to Edit]</option>
-            @{ 
-                var products = westWindDatabase.Query("Select  ProductId, ProductName from Products");
-                foreach(var row in products)
+            @{
+                var products = QueryDatabase(westWindDatabase, "Select  ProductId, ProductName from Products");
+                if (products is Exception)
                 {
-                    <option value="@row.ProductID" selected="@(row.ProductID.ToString() == selectedProductId)">@row.ProductName</option>
+                    <option value="">[Products unavailable]</option>
+                }
+                else
+                {
+                    foreach (var row in products)
+                    {
+                        <option value="@row.ProductID" selected="@(row.ProductID.ToString() == selectedProductId)">@row.ProductName</option>
+                    }
                 }
             }
         </select>
@@ -137,11 +144,18 @@
         <label for="SupplierList">Supplier</label>
         <select type="text" name="supplierList" id="SupplierList">
             <option value="">[Select a Supplier]</option>
-            @{ 
-                var suppliers = westWindDatabase.Query("Select SupplierID, CompanyName from Suppliers");
-                foreach(var row in suppliers)
+            @{
+                var suppliers = QueryDatabase(westWindDatabase, "Select SupplierID, CompanyName from Suppliers");
+                if (products is Exception)
                 {
-                    <option value="@row.SupplierID">@row.CompanyName</option>
+                    <option value="">[Suppliers unavailable]</option>
+                }
+                else
+                {
+                    foreach (var row in suppliers)
+                    {
+                        <option value="@row.SupplierID">@row.CompanyName</option>
+                    }
                 }
             }
         </select>
@@ -150,10 +164,17 @@
         <select type="text" name="categoriesList" id="CategoriesList">
             <option value="">[Select a Category]</option>
             @{
-                var categories = westWindDatabase.Query("Select CategoryID, CategoryName from Categories");
-                foreach (var row in categories)
+                var categories = QueryDatabase(westWindDatabase, "Select CategoryID, CategoryName from Categories");
+                if (products is Exception)
                 {
-                    <option value="@row.CategoryID">@row.CategoryName</option>
+                    <option value="">[Categories unavailable]</option>
+                }
+                else
+                {
+                    foreach (var row in categories)
+                    {
+                        <option value="@row.CategoryID">@row.CategoryName</option>
+                    }
                 }
             }
         </select>
@@ -178,7 +199,7 @@
             <button type="submit" name="submitAction" value="Delete">Remove From Catalog</button>
             <button type="submit" name="submitAction" value="Clear">Clear Form</button>
             @* inputs: the value is the same as the text unlike buttons *@
-            <input type="reset" value="Reset Form"/>
+            <input type="reset" value="Reset Form" />
         </fieldset>
     </form>
 
@@ -195,9 +216,9 @@
         {
             result = db.Query(query);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            result = null;
+            result = ex;
         }
         return result;
     }
