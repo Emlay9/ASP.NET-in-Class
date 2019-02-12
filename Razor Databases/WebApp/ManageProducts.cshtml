@@ -184,3 +184,22 @@
 
 </body>
 </html>
+
+@functions {
+    // Razor functions CAN NOT directly output/render to the browser response
+
+    private dynamic QueryDatabase(WebMatrix.Data.Database db, string query)
+    {
+        dynamic result;
+        try
+        {
+            result = db.Query(query);
+        }
+        catch (Exception)
+        {
+            result = null;
+        }
+        return result;
+    }
+
+}
