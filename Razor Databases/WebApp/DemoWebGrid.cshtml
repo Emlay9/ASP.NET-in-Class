@@ -30,7 +30,7 @@
         @Html.DropDownList(nameof(categorySelection), categorySelection, catOptions)
         <button type="submit">Look up Products</button>
 
-
+</form>
         @if (IsPost)
         {
             int catId;
@@ -46,9 +46,20 @@
                 //myGrid.PageIndex =
                 <div>
                     <h3>Products</h3>
-                    @myGrid.GetHtml()
+                    @* Pass in data to my .GetHTML viea name parameters *@
+                    @myGrid.GetHtml(columns: myGrid.Columns(
+                        myGrid.Column(columnName: "ProductName", header: "Product Name"), 
+                        myGrid.Column(columnName: "QuantityPerUnit", header: "Qty/Unit"),
+                        myGrid.Column(columnName: "UnitPrice", header: "UnitPrice", format: @<text>@item.UnitPrice.ToString("C")</text>),
+                        myGrid.Column(columnName: "ProductID", header: "Action", format: 
+                    @<text>
+                    <form method="post" action="~/ManageProducts.cshtml">
+                    <button type="submit">Edit</button>
+                    <input type="hidden" name="" value="@item.ProductID"/> 
+                    </form>
+                    </text>)))
                 </div>
             }
         }
-    </form>
+    
 </div>
