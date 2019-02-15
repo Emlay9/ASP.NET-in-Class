@@ -2,7 +2,7 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = "Demo WebGrid - Search Products by Category";
     //page comes from the query string (when you go to the second page at the end of the URL is ?page=2)
-    var page = Request["page"];
+    //var page = Request["page"];
 
     var db = WebMatrix.Data.Database.Open("WestWindDb");
     var allCategories = db.Query("SELECT CategoryID, CategoryName FROM Categories");
@@ -23,7 +23,7 @@
 }
 
 <div>
-    <p>Page number = @page</p>
+    @*<p>Page number = @page</p>*@
     <h2>Search Products by Category</h2>
     <form method="post">
         Category:
@@ -42,7 +42,8 @@
             {
                 var products = db.Query("SELECT ProductID, ProductName, QuantityPerUnit, UnitPrice FROM Products WHERE CategoryID = @0", catId);
                 // Create a WebGrid with the resulting data
-                var myGrid = new WebGrid(products);
+                //We are turning off paging and sorting with the WebGrid so that we don't have to worry about micing data sent via both POST and GET requests
+                var myGrid = new WebGrid(products, canPage:false, canSort:false);
                 //myGrid.PageIndex =
                 <div>
                     <h3>Products</h3>
@@ -54,8 +55,8 @@
                         myGrid.Column(columnName: "ProductID", header: "Action", format: 
                     @<text>
                     <form method="post" action="~/ManageProducts.cshtml">
-                    <button type="submit">Edit</button>
-                    <input type="hidden" name="" value="@item.ProductID"/> 
+                        <button type="submit" name="submitAction" value="Edit">Edit</button>
+                        <input type="hidden" name="" value="@item.ProductID"/> 
                     </form>
                     </text>)))
                 </div>
