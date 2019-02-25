@@ -71,7 +71,7 @@
         // NOTE: This is for server-side validation
         // The validation object is used to set up various kinds of validation requirements for any user-input controls
         // on the form. This object can later be checked by our code by calling Validation.IsValid()
-        Validation.RequireField(nameof(productName), "You must suupply a name for the product");
+        Validation.RequireField(nameof(productName), "You must supply a name for the product");
         Validation.RequireField(nameof(unitPrice), "You must supply a price per unit for the product");
         Validation.RequireField(nameof(qtyPerUnit), "Please identify the quantity & kind of item per unit");
         Validation.RequireField(nameof(onOrder), "Please supplle an on-order value");
@@ -333,7 +333,7 @@
         return result;
     }
 
-
+    //params specifies a method parameter that takes a varying number of arguments
     private dynamic QueryDatabase(WebMatrix.Data.Database db, string query, bool querySingle, params object[] values)
     {
         dynamic result;
