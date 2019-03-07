@@ -22,6 +22,7 @@ namespace WebApp
 
         // Static "hack" allows the list of ships to persist on postback
         // Don't ever use this in real life!
+        //Create a list of type Ship (Ship class made in the StarTrek Folder)
         private static List<Ship> Fleet = new List<Ship>();
 
         protected void AddShip_Click(object sender, EventArgs e)
@@ -43,8 +44,9 @@ namespace WebApp
         {
             Registry.Text = string.Empty;
             ShipClass.SelectedIndex = 0;
+            //Clear the list
             Fleet.Clear();
-            // Populate the GridView
+            // Populate the GridView (with empty list)
             FleetGrid.DataSource = Fleet;
             FleetGrid.DataBind();
 

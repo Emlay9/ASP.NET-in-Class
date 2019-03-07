@@ -2,6 +2,9 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h1>CD Library</h1>
+    <fieldset>
+
+    </fieldset>
 
 
 </asp:Content>
