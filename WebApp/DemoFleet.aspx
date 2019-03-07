@@ -16,7 +16,15 @@
                 </asp:DropDownList>
 
                 <asp:Label ID="Label3" runat="server" Text="Max Power" AssociatedControlID="Power" />
-                <asp:TextBox ID="Power" runat="server" TextMode="Range" min="500" max="2000" Text="1000" step="50" />
+
+                <asp:TextBox ID="Power" runat="server" TextMode="Range" min="500" max="2000" Text="1000" step="50" list="tickmarks"/> 
+                <datalist id="tickmarks">
+                  <option value="500" label="500">
+         
+                  <option value="1250" label="1250">
+                
+                  <option value="2000" label="2000">
+                </datalist>
             </fieldset>
             <asp:LinkButton ID="AddShip" runat="server" CssClass="btn btn-primary" OnClick="AddShip_Click">Add Ship</asp:LinkButton>
             <asp:LinkButton ID="ClearForm" runat="server" CssClass="btn btn-default" OnClick="ClearForm_Click">Clear Form</asp:LinkButton>

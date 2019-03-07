@@ -35,7 +35,7 @@
 
                 <asp:Label ID="Label8" runat="server" AssociatedControlID="TextBox8">TextBox - Search</asp:Label>
                 <asp:TextBox runat="server" ID="TextBox8" TextMode="Search" />
-
+                
                 <asp:Label ID="Label9" runat="server" AssociatedControlID="TextBox9">TextBox - Phone</asp:Label>
                 <asp:TextBox runat="server" ID="TextBox9" TextMode="Phone" />
 
@@ -64,7 +64,9 @@
                 <asp:TextBox runat="server" ID="TextBox16" TextMode="Week" />
 
                 <asp:Label ID="Label18" runat="server" AssociatedControlID="TextBox18">TextBox - Range</asp:Label>
-                <asp:TextBox runat="server" ID="TextBox18" TextMode="Range" />
+                <asp:TextBox runat="server" ID="TextBox18" TextMode="Range" min="-70" max="45" step="2"/>
+
+
 
                 <asp:Label ID="Label7" runat="server" AssociatedControlID="TextBox7">TextBox - MultiLine</asp:Label>
                 <asp:TextBox runat="server" ID="TextBox7" TextMode="MultiLine" Rows="5" />
