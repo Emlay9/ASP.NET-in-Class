@@ -147,7 +147,10 @@
     <Content Include="Images\Movie Library.png" />
     <Content Include="Images\User Registration %28Alternate 263h%29.png" />
     <Content Include="Images\User Registration.png" />
+    <Content Include="Practice\CDLibrary.aspx" />
     <Content Include="Practice\Default.aspx" />
+    <Content Include="Practice\MovieLibrary.aspx" />
+    <Content Include="Practice\UserRegistration.aspx" />
     <Content Include="Sandbox.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -281,12 +284,33 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Practice\CDLibrary.aspx.cs">
+      <DependentUpon>CDLibrary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Practice\CDLibrary.aspx.designer.cs">
+      <DependentUpon>CDLibrary.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Practice\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Practice\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Practice\MovieLibrary.aspx.cs">
+      <DependentUpon>MovieLibrary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Practice\MovieLibrary.aspx.designer.cs">
+      <DependentUpon>MovieLibrary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Practice\UserRegistration.aspx.cs">
+      <DependentUpon>UserRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Practice\UserRegistration.aspx.designer.cs">
+      <DependentUpon>UserRegistration.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sandbox.aspx.cs">
