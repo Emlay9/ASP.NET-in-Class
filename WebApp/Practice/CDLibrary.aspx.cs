@@ -13,5 +13,10 @@ namespace WebApp.Practice
         {
 
         }
+
+        protected void AddCD_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

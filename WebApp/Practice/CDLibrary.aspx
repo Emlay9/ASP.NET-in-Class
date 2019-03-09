@@ -21,9 +21,18 @@
                 <asp:Label runat="server" AssociatedControlID="TracksNumber" Text="Number of Tracks" />
                 <asp:TextBox runat="server" ID="TracksNumber" TextMode="Number"/>
                 <br />
-                <asp:Button runat="server" Text="Add to Library" CssClass="btn btn-primary"/>
+                <asp:Button runat="server" Text="Add to Library" CssClass="btn btn-primary" OnClick="AddCD_Click"/>
             </fieldset>
         </div>
+    </div>
+    <div class="col-md-6">
+        <%--Validation Controls--%>
+        <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Title is required for the CD information"></asp:RequiredFieldValidator>
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Year is required"></asp:RequiredFieldValidator>
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="Number of tracks is required"></asp:RequiredFieldValidator>
+
+        <asp:GridView ID="CDGridView" runat="server"></asp:GridView>
     </div>
      <script src="../Scripts/bootwrap-freecode.js"></script>
 </asp:Content>
