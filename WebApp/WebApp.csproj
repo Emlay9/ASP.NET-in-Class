@@ -291,6 +291,7 @@
     <Compile Include="Practice\CDLibrary.aspx.designer.cs">
       <DependentUpon>CDLibrary.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Practice\Classes\CD.cs" />
     <Compile Include="Practice\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

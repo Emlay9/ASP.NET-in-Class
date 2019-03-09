@@ -13,7 +13,7 @@
                 <asp:TextBox runat="server" ID="CDTitle" />
                 <br />
                 <asp:Label runat="server" AssociatedControlID="Artists" Text="Artist(s)" />
-                <asp:TextBox runat="server" ID="artists" TextMode="MultiLine" />
+                <asp:TextBox runat="server" ID="Artists" TextMode="MultiLine" />
                 <br />
                 <asp:Label runat="server" AssociatedControlID="Year" Text="Year" />
                 <asp:TextBox runat="server" ID="Year" TextMode="Number" />
@@ -24,15 +24,24 @@
                 <asp:Button runat="server" Text="Add to Library" CssClass="btn btn-primary" OnClick="AddCD_Click"/>
             </fieldset>
         </div>
-    </div>
-    <div class="col-md-6">
-        <%--Validation Controls--%>
-        <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Title is required for the CD information"></asp:RequiredFieldValidator>
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Year is required"></asp:RequiredFieldValidator>
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="Number of tracks is required"></asp:RequiredFieldValidator>
+        <div class="col-md-6">
+                <%--Validation Controls--%>
+                <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
+                <asp:RequiredFieldValidator ID="RequiredFieldCDTitle" ControlToValidate="CDTitle" runat="server" ErrorMessage="Title is required for the CD information" Display="None"></asp:RequiredFieldValidator>
+                <asp:RequiredFieldValidator ID="RequiredFieldYear" ControlToValidate="Year" runat="server" ErrorMessage="Year is required" Display="None"></asp:RequiredFieldValidator>
 
-        <asp:GridView ID="CDGridView" runat="server"></asp:GridView>
+                <asp:RequiredFieldValidator ID="RequiredFieldTracks" runat="server"
+                    ControlToValidate="TracksNumber"  
+                    ErrorMessage="Number of tracks is required" 
+                    Display="None" />
+
+                <asp:CompareValidator ID="MinYear" Display="None" runat="server" ControlToValidate="Year" ErrorMessage="Year must be 1900 or greater" ValueToCompare="1900" Operator="GreaterThanEqual"></asp:CompareValidator>
+                <asp:CompareValidator ID="MinTracks" Display="None" runat="server" ControlToValidate="TracksNumber" ErrorMessage="Number of tracks must be greater than 0" ValueToCompare="0" Operator="GreaterThan"></asp:CompareValidator>
+
+                <%-- Grid of Results --%>
+                <asp:GridView ID="CDGrid" runat="server" CssClass="table table-striped"></asp:GridView>
+         </div>
     </div>
+   
      <script src="../Scripts/bootwrap-freecode.js"></script>
 </asp:Content>

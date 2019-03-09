@@ -31,13 +31,13 @@ namespace WebApp.Practice {
         protected global::System.Web.UI.WebControls.TextBox CDTitle;
         
         /// <summary>
-        /// artists control.
+        /// Artists control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox artists;
+        protected global::System.Web.UI.WebControls.TextBox Artists;
         
         /// <summary>
         /// Year control.
@@ -67,39 +67,57 @@ namespace WebApp.Practice {
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
         
         /// <summary>
-        /// RequiredFieldValidator1 control.
+        /// RequiredFieldCDTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldCDTitle;
         
         /// <summary>
-        /// RequiredFieldValidator2 control.
+        /// RequiredFieldYear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldYear;
         
         /// <summary>
-        /// RequiredFieldValidator3 control.
+        /// RequiredFieldTracks control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldTracks;
         
         /// <summary>
-        /// CDGridView control.
+        /// MinYear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView CDGridView;
+        protected global::System.Web.UI.WebControls.CompareValidator MinYear;
+        
+        /// <summary>
+        /// MinTracks control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompareValidator MinTracks;
+        
+        /// <summary>
+        /// CDGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView CDGrid;
     }
 }
