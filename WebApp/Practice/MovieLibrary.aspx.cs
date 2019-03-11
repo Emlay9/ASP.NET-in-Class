@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using WebApp.Practice.Classes;
 
 namespace WebApp.Practice
 {
@@ -12,6 +13,15 @@ namespace WebApp.Practice
         protected void Page_Load(object sender, EventArgs e)
         {
 
+        }
+
+        protected void AddToLibrary_Click(object sender, EventArgs e)
+        {
+            if(IsValid)
+            {
+                Movie movie = new Movie();
+
+            }
         }
     }
 }
