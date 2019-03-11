@@ -49,13 +49,13 @@ namespace WebApp.Practice {
         protected global::System.Web.UI.WebControls.RadioButtonList Rating;
         
         /// <summary>
-        /// Reviews control.
+        /// Review control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Reviews;
+        protected global::System.Web.UI.WebControls.DropDownList Review;
         
         /// <summary>
         /// MovieGrid control.

@@ -29,8 +29,8 @@
                     <asp:ListItem Text="Restricted" />
                 </asp:RadioButtonList>
                 <br />
-                <asp:Label runat="server" Text="Reviews (1-5 Stars)" AssociatedControlID="Reviews" />
-                <asp:DropDownList ID="Reviews" runat="server">
+                <asp:Label runat="server" Text="Reviews (1-5 Stars)" AssociatedControlID="Review" />
+                <asp:DropDownList ID="Review" runat="server">
                      <asp:ListItem Text="1 Star" />
                      <asp:ListItem Text="2 Star" />
                      <asp:ListItem Text="3 Star" />

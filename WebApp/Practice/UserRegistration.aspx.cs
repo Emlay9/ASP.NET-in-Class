@@ -13,5 +13,10 @@ namespace WebApp.Practice
         {
 
         }
+
+        protected void SubmitRegistration_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
