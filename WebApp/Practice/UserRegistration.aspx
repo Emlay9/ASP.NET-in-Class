@@ -31,6 +31,7 @@
             <asp:RequiredFieldValidator ID="RequireUserName" runat="server" ErrorMessage="User Name is required" ControlToValidate="UserName" Display="None"></asp:RequiredFieldValidator>
             <asp:CompareValidator ID="CompareValidatorEmail" runat="server" ErrorMessage="Email Address does not match Confirm Email" ControlToValidate="Email" ControlToCompare="ConfirmEmail" Operator="Equal" Display="None"></asp:CompareValidator>
             <asp:CompareValidator ID="CompareValidator1" runat="server" ErrorMessage="Email Address does not match Confirm Email" ControlToValidate="Password" ControlToCompare="ConfirmPassword" Operator="Equal" Display="None"></asp:CompareValidator>
+            <asp:RegularExpressionValidator ID="RegularExpressionValidatorPassword" runat="server" ErrorMessage="Password must be between 4 and 8 digits long and include at least one numeric digit" ValidationExpression="^(?=.*\d).{4,8}$" ControlToValidate="Password" Display="None"></asp:RegularExpressionValidator>
         </div>
     </div>
     <script src="../Scripts/bootwrap-freecode.js"></script>
