@@ -20,6 +20,8 @@ namespace WestWindModels
         public int SupplierID { get; set; }
         public int CategoryID { get; set; }
         public string QuantityPerUnit { get; set; }
+        //short? is a shorthand way of writing Nullable<short>
+        public short? MinimumOrderQuantity { get; set; } // smallint (can be null)
         public decimal UnitPrice { get; set; }
         public int UnitsOnOrder { get; set; }
         public bool Discontinued { get; set; }
