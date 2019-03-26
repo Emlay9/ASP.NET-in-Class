@@ -15,17 +15,19 @@
         <div class="col-sm-6">
             <h4>Notes:</h4>
         </div>
-
+        <br />
         <div class="row">
             <div class="col-md-12">
                 <asp:Panel ID="MessagePanel" runat="server" Visible="false" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                    <br />
                     <asp:Label ID="MessageLabel" runat="server" ></asp:Label>
                 </asp:Panel>
             </div>
         </div>
+        <br />
         <div class="row">
             <div class="col-md-12">
                 <fieldset>
@@ -33,11 +35,32 @@
                     <asp:Label ID="SupplierIdLabel" runat="server" Text="SupplierID" AssociatedControlID="CurrentSupplier"></asp:Label>
                     <asp:TextBox ID="CurrentSupplier" runat="server" Enabled="false"></asp:TextBox>
 
-                    <asp:Label ID="Label1" runat="server" Text="SupplierID" AssociatedControlID="CurrentSupplier"></asp:Label>
-                    <asp:TextBox ID="TextBox1" runat="server" Enabled="false"></asp:TextBox>
+                    <asp:Label ID="Label1" runat="server" Text="Company Name" AssociatedControlID="CompanyName"></asp:Label>
+                    <asp:TextBox ID="CompanyName" runat="server" Enabled="false"></asp:TextBox>
 
-                    <asp:Label ID="Label2" runat="server" Text="SupplierID" AssociatedControlID="CurrentSupplier"></asp:Label>
-                    <asp:TextBox ID="TextBox2" runat="server" Enabled="false"></asp:TextBox>
+                    <asp:Label ID="Label2" runat="server" Text="Contact Title" AssociatedControlID="ContactTitle"></asp:Label>
+                    <asp:TextBox ID="ContactTitle" runat="server" Enabled="false"></asp:TextBox>
+
+                    <asp:Label ID="Label3" runat="server" Text="Contact Name" AssociatedControlID="ContactName"></asp:Label>
+                    <asp:TextBox ID="ContactName" runat="server" Enabled="false"></asp:TextBox>
+
+                    <asp:Label ID="Label4" runat="server" Text="SupplierID" AssociatedControlID="Email">Email</asp:Label>
+                    <asp:TextBox ID="Email" runat="server" Enabled="false"></asp:TextBox>
+
+                    <asp:Label ID="Label5" runat="server" Text="Address" AssociatedControlID="Address"></asp:Label>
+                    <asp:TextBox ID="Address" runat="server" Enabled="false"></asp:TextBox>
+
+                    <asp:Label ID="Label6" runat="server" Text="City" AssociatedControlID="City"></asp:Label>
+                    <asp:TextBox ID="City" runat="server" Enabled="false"></asp:TextBox>
+
+                    <asp:Label ID="Label7" runat="server" Text="PostalCode" AssociatedControlID="PostalCode"></asp:Label>
+                    <asp:TextBox ID="PostalCode" runat="server" Enabled="false"></asp:TextBox>
+
+                    <asp:Label ID="Label8" runat="server" Text="Phone" AssociatedControlID="Phone"></asp:Label>
+                    <asp:TextBox ID="Phone" runat="server" Enabled="false"></asp:TextBox>
+
+                    <asp:Label ID="Label9" runat="server" Text="Fax" AssociatedControlID="Fax"></asp:Label>
+                    <asp:TextBox ID="Fax" runat="server" Enabled="false"></asp:TextBox>
                 </fieldset>
             </div>
         </div>
