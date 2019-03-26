@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WestWindModels;
+using WestWindSystem.DataModels;
 using WestWindSystem.DLL;
 
 namespace WestWindSystem.BLL
@@ -20,6 +21,19 @@ namespace WestWindSystem.BLL
             }
         }
 
+        public List<Country> ListCountries()
+        {
+            using (var context = new WestWindContext())
+            {
+                string sql = "SELECT DISTINCT Country as 'Name' FROM Suppliers ORDER BY Country";
+                // The .Database property of our DbContext object gives more direct access to the database. With this, we can call
+                // methods such as .Execute() or .SqlQuery<TResult>();
+                // There's a mapping between the column 'Name' and the property 'Name' of Country class
+                var result = context.Database.SqlQuery<Country>(sql);
+                return result.ToList();
+            }
+        }
+
         public Supplier GetSupplier(int id)
         {
             using (var context = new WestWindContext())
@@ -28,5 +42,18 @@ namespace WestWindSystem.BLL
                 return context.Suppliers.Find(id);
             }
         }
+
+        public int AddSupplier(Supplier item)
+        {
+            using (var context = new WestWindContext())
+            {
+                context.Suppliers.Add(item);
+                context.SaveChanges();
+                //After saving changes, my local context object "syncs" up the newlly added supplier's ID that was generated from the table's
+                // IDENTITY Constraint
+                return item.SupplierID;
+            }
+        }
     }
 }
+

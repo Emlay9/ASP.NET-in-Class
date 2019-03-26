@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using WestWindModels;
 using WestWindSystem.BLL;
+using WestWindSystem.DataModels;
 
 namespace WebApp.Admin
 {
@@ -16,6 +17,7 @@ namespace WebApp.Admin
         const string STYLE_INFO = "alert-info";
         const string STYLE_SUCCESS = "alert-success";
         #endregion
+
         #region Page Events
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,6 +28,7 @@ namespace WebApp.Admin
                 {
                     //throw new NotImplementedException("TBA");
                     BindSupplierDropDown();
+                    BindCountryDropDown();
                 }
                 catch (Exception ex)
                 {
@@ -60,9 +63,11 @@ namespace WebApp.Admin
                     Email.Text = result.Email;
                     Address.Text = result.Address;
                     City.Text = result.City;
+                    Region.Text = result.Region;
                     PostalCode.Text = result.PostalCode;
                     Phone.Text = result.Phone;
                     Fax.Text = result.Fax;
+                    CountryDropDown.SelectedValue = result.Country;
                 }
                 catch (Exception)
                 {
@@ -72,7 +77,46 @@ namespace WebApp.Admin
             }
         }
 
-        #endregion
+        protected void AddSupplier_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //TODO: 0) VALIDATION
+                // 1) Create a Supplier object from the data in the form
+                Supplier item = new Supplier();
+                item.CompanyName = CompanyName.Text;
+                item.ContactName = ContactName.Text;
+                if(!string.IsNullOrWhiteSpace(ContactTitle.Text))
+                    item.ContactTitle = ContactTitle.Text; //nullable
+                item.Email = Email.Text;
+                item.Address = Address.Text;
+                item.City = City.Text;
+                if (!string.IsNullOrWhiteSpace(Region.Text))
+                    item.Region = Region.Text;
+                if (!string.IsNullOrWhiteSpace(PostalCode.Text))
+                    item.PostalCode = PostalCode.Text;
+                item.Phone = Phone.Text;
+                if (!string.IsNullOrWhiteSpace(Fax.Text))
+                    item.Fax = Fax.Text;
+                item.Country = CountryDropDown.SelectedValue;
+
+                // 2) Send the data to the BLL
+                var controller = new SupplierController();
+                int newSupplierId = controller.AddSupplier(item);
+
+                // 3) Update the form and give feedback to the user
+                BindSupplierDropDown(); //because there's a new supplier now
+                SupplierDropDown.SelectedValue = newSupplierId.ToString();
+                CurrentSupplier.Text = newSupplierId.ToString();
+                ShowMessage("Supplier has been added.", STYLE_SUCCESS);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage(ex.Message, STYLE_WARNING);
+            }
+        }
+
+        #endregion //end button events
 
         #region Private Methods
 
@@ -83,6 +127,15 @@ namespace WebApp.Admin
             MessagePanel.Visible = true;
         }
 
+        private void BindCountryDropDown()
+        {
+            SupplierController controller = new SupplierController();
+            CountryDropDown.DataSource = controller.ListCountries();
+            CountryDropDown.DataTextField = nameof(Country.Name);
+            CountryDropDown.DataValueField = nameof(Country.Name);
+            CountryDropDown.DataBind();
+            CountryDropDown.Items.Insert(0, "[Select a country]");
+        }
 
         private void BindSupplierDropDown()
         {
@@ -97,5 +150,6 @@ namespace WebApp.Admin
             SupplierDropDown.Items.Insert(0, new ListItem("[Select a supplier]", "-1"));
         }
         #endregion
+
     }
 }
