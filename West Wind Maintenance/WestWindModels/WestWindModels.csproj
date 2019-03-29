@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Category.cs" />
+    <Compile Include="Customer.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="ManifestItem.cs" />
     <Compile Include="Order.cs" />
